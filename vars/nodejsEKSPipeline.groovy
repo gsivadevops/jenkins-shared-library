@@ -7,8 +7,10 @@ def call(Map configMap){
             appVersion = ''
             REGION = "us-east-1"
             ACCOUNT_ID = "020027209432"
-            PROJECT = "roboshop"
-            COMPONENT = "catalogue"
+            //PROJECT = "roboshop"
+            //COMPONENT = "catalogue"
+            PROJECT = configMap.get('project')
+            COMPONENT = configMap.get('component')
         }
         options {
             timeout(time: 30, unit: 'MINUTES')
@@ -108,19 +110,19 @@ def call(Map configMap){
 
             // To build the ECR image and pushing the image
             stage('Docker Build') {
-                steps {
-                    script {
-                        withAWS(credentials: 'aws-creds', region: 'us-east-1') {
-                            sh """
-                                aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com
-                                docker build -t ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
-                                docker push ${ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
-                                aws ecr wait image-scan-complete --repository-name ${PROJECT}/${COMPONENT} --image-id imageTag=${appVersion} --region ${REGIO
-                            """
-                        }
-                    }
-                }
-            }
+              steps {
+                  script {
+                      withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                          sh """
+                              aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
+                              docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
+                              docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
+                              aws ecr wait image-scan-complete --repository-name ${PROJECT}/${COMPONENT} --image-id imageTag=${appVersion} --region ${REGION}
+                          """
+                      }
+                  }
+              }
+          
 
             // Quality gate for ECR
             // stage('Check Scan Results') {

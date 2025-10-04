@@ -1,4 +1,4 @@
-def call(Map configMap){
+def call(Map configMap) {
     pipeline {
         agent {
             label 'AGENT-1'
@@ -122,6 +122,7 @@ def call(Map configMap){
                       }
                   }
               }
+            }
           
 
             // Quality gate for ECR
@@ -191,5 +192,5 @@ def call(Map configMap){
             echo 'Hello Failure'
           }
         }
-      }
+    }
 }

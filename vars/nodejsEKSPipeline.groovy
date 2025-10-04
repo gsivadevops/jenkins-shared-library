@@ -8,9 +8,9 @@ def call(Map configMap) {
             REGION = "us-east-1"
             ACCOUNT_ID = "020027209432"
             //PROJECT = "roboshop"
-            //COMPONENT = "catalogue"
+            COMPONENT = "catalogue"
             PROJECT = configMap.get('project')
-            COMPONENT = configMap.get('component')
+            //COMPONENT = configMap.get('component')
         }
         options {
             timeout(time: 30, unit: 'MINUTES')
@@ -169,7 +169,8 @@ def call(Map configMap) {
                 steps {
                     script {
                         //build job: 'catalogue-cd',
-                        build job: "../${COMPONENT}-cd",
+                        // build job: "../${COMPONENT}-cd",
+                        build job: "../user-cd",
                         parameters: [
                             string(name: 'appVersion', value: "${appVersion}"),
                             string(name: 'deploy_to', value: 'dev')

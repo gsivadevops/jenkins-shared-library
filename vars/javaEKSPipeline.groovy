@@ -18,23 +18,22 @@ def call(Map configMap) {
           booleanParam (name: 'deploy', defaultValue: false, description: 'Toggle this value')
         }
         stages {
-            stage('Read Package.json') {
-              steps {
-                script{
-                  def packageJson = readJSON file: 'package.json'
-                  appVersion = packageJson.version
-                  echo "Package Version: ${appVersion}"
+            stage('Read pom.xml') {
+                steps {
+                    script {
+                        appVersion = readMavenPom().getVersion()
+                        echo "app version: ${appVersion}"
+                    }
                 }
-              }
             }
             stage('Install Dependencies') {
-              steps {
-                script{
-                  sh """
-                    npm install              
-                  """
+                steps {
+                    script {
+                    sh """
+                        mvn clean package 
+                    """
+                    }
                 }
-              }
             }
             stage('Unit Testing') {
                 steps {

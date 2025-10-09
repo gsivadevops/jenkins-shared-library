@@ -44,7 +44,6 @@ def call(Map configMap) {
                     }
                 }
             } 
-
             // SonarQube scanner to analyse your source code
             // stage('Sonar Scan') {
             //     environment {
